@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="{% url 'coaches' %}"><i class="fa fa-angle-left"></i></a>
+            <br>
+
+            <p style="font-size: large;">Pay Tk {{profile.coachprofile.session_price}} to bkash merchant number 0171******* and copy the transaction id below</p>
+
+            <form class="form" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Input:Text -->
+                {% for field in form %}
+                <div class="form__field">
+                    <label for="formInput#text">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

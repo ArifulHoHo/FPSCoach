@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+  <!-- Main Section -->
+  <main class="inbox my-xl">
+    <div class="content-box">
+      <h3 class="inbox__title">Notifications</h3>
+      {% if sessions is None %}
+        <h3>No notifications</h3>
+        {% else %}
+      <ul class="messages">
+        
+        
+          {% if request.user.profile.is_coach %}
+          {% for session in sessions %}
+          <li class="message message--unread">     
+            <a href="{% url 'coach-profile' session.bookUser.id %}">
+              <span class="message__author">Player: {{session.bookUser}}</span>
+              <span class="message__subject">Session time: {{session.session_date}}  {{session.session_time}} </span>
+              <span class="message__date">{{session.created}}</span>
+              <span class="message__date">Payment received: Tk {{session.session_price}}</span>
+              <a href="{% url 'cancel-session' session.id %}" class="btn btn--sub " style="margin-top: 10px;">Cancel session</a>
+            </a>   
+          </li>
+          {% endfor %}
+          {% else %}
+          {% for session in sessions %}
+          <li class="message message--unread">     
+            <a href="{% url 'coach-profile' session.coachBooked.id %}">
+              <span class="message__author">Coach: {{session.coachBooked}}</span>
+              <span class="message__subject">Session time: {{session.session_date}} {{session.session_time}} </span>
+              <span class="message__date">{{session.created}}</span>
+              <span class="message__date">Payment : Tk {{session.session_price}}</span>
+            </a>   
+          </li>
+          {% endfor %}
+          {% endif %}
+        {% endif %}
+        
+      </ul>
+    </div>
+  </main>
+{% endblock %}

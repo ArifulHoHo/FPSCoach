@@ -1,0 +1,153 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+  <!-- Main Section -->
+  <main class="settingsPage profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="fa fa-edit"></i> Edit</a>
+              <img class="avatar avatar--xl dev__avatar" src="{{profile.profile_image.url}}" />
+              <h2 class="dev__name">{{profile.name}}</h2>
+              {% if profile.is_coach %}
+                <p class="dev__location">Coach</p>
+              {% endif %}
+              {% if profile.short_intro is not None %}
+              <p class="dev__title">{{profile.short_intro}}</p>
+              {% endif %}
+              {% if profile.location is not None %}
+              <p class="dev__location">Based in {{profile.location}}</p>
+              {% endif %}
+              <ul class="dev__social">
+                {% if profile.social_twitch %}
+                <li>
+                  <a title="Twitch" href="{{profile.social_twitch}}" target="_blank"><i class="fa fa-twitch"></i></a>
+                </li>
+                {% endif %}
+                {% if profile.social_instagram %}
+                <li>
+                  <a title="Instagram" href="{{profile.social_instagram}}" target="_blank"><i class="fa fa-instagram"></i></a>
+                </li>
+                {% endif %}
+                {% if profile.social_twitter %}
+                <li>
+                  <a title="Twitter" href="{{profile.social_twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>
+                </li>
+                {% endif %}
+                {% if profile.social_youtube %}
+                <li>
+                  <a title="Youtube" href="{{profile.social_youtube}}" target="_blank"><i class="fa fa-youtube"></i></a>
+                </li>
+                {% endif %}
+                <!-- <li>
+                  <a title="Personal Website" href="#" target="_blank"><i class="fa fa-globe"></i></a>
+                </li> -->
+              </ul>
+              <!-- <a href="#" class="btn btn--sub btn--lg">Send Message </a> -->
+              {% if profile.is_coach %}
+                <p  class="btn btn--sub btn--lg">Session price <br> Tk {{profile.coachprofile.session_price}}</p>
+                
+              {% elif request.user.is_staff is False %}
+                <a href="{% url 'upgrade-user' %}" class="btn btn--sub btn--lg" style="margin-top: 10px;">Upgrade to Coach </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">About Me</h3>
+            <p class="devInfo__about">
+              {{profile.bio|linebreaksbr}}
+          </div>
+          {% if stats is not None %}
+            <h3 class="dev__name">Peak Rank : {{stats.peak_rank}}</h3>
+            <br>
+            <h3 class="devInfo__title">Valorant Statistics This Act</h3>
+            
+            <table class="settings__table" style="text-align: center;">
+              <tr>
+                <td class="settings__tableInfo">
+                  <h4>Current Rank</h4>
+                  <h4>{{stats.rank}}</h4>
+                </td>
+              </tr>
+              <tr>
+                <td class="settings__tableInfo">
+                  <h4 >Matches Played  :  {{stats.matches_played}} </h4> 
+                
+                  <h4>Matches Won : {{stats.matches_won}}</h4>
+                </td>
+              </tr>
+              <tr>
+                <td class="settings__tableInfo">
+                  <h4>Damage Per Round : {{stats.damage_per_round}}</h4>
+                  <h4>HS Percent : {{stats.hs_percent}}</h4>
+                  <h4>K/D : {{stats.k_d}}</h4>
+                </td>
+                
+              </tr>
+              
+            
+            </table>
+
+            <div class="settings">
+              <h3 class="settings__title">Skills</h3>
+              <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create-skill' %}"><i class="fa fa-plus"></i>  Skill</a>
+            </div>
+
+            <br>
+            
+            <div class="devInfo__otherSkills">
+                  {% for skill in skills %}
+                  <span class="tag tag--pill tag--sub tag--lg">
+                    <small>{{skill.name}}</small>
+                  </span>
+                  {% endfor %}
+                  
+            </div>
+            
+
+            {% if profile.is_coach %}
+            <div class="comments">
+              <h3 class="singleProject__subtitle">Coach Reviews</h3>
+              <h5 class="project--rating">
+                {{profile.coachprofile.vote_ratio}}% Postitive Feedback ({{profile.coachprofile.vote_total}} Votes)
+              </h5>
+
+
+              <div class="commentList">
+                {% for review in reviews %}
+                <div class="comment">
+                  <a href="">
+                    <img class="avatar avatar--md"
+                      src="{{review.owner.profile_image.url}}" alt="user" />
+                  </a>
+                  <div class="comment__details">
+                    <a href="" class="comment__author">{{review.owner.name}}</a>
+                    <p class="comment__info">
+                      {{review.body}}
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          {% else %}
+            {% if request.user.is_staff is False %}
+              <a href="" style="color: rgb(16, 66, 191);">Link your valorant account</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

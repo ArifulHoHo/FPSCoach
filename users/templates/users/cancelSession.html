@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="{% url 'notifications' %}"><i class="fa fa-angle-left"></i></a>
+            <br>
+            <h3 class="inbox__title">Cancel Session ID: {{session.id}}</h3>
+            <form class="form" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Input:Text -->
+                
+                <div class="form__field">
+                    <label for="formInput#text">Are you sure you want be cancel your session? Press confirm to continue</label>
+                </div>
+                
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Confirm" />
+
+                
+                
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
